@@ -1,7 +1,4 @@
 
-// Keyboard input
-// Draw a rectangle when any key is pressed
-
 var text;
 
 var cycles = 1000000;
