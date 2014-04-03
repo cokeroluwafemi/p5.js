@@ -8,6 +8,7 @@
 var constants = function (require) {
         var PI = Math.PI;
         return {
+            shiffmanMode: 'radians',
             ARROW: 'default',
             CROSS: 'crosshair',
             HAND: 'pointer',
@@ -218,8 +219,20 @@ var core = function (require, shim, constants) {
         };
         return p5;
     }({}, shim, constants);
-var mathpvector = function (require) {
+var polargeometry = function (require) {
+        return {
+            degreesToRadians: function (x) {
+                return 2 * Math.PI * x / 360;
+            },
+            radiansToDegrees: function (x) {
+                return 360 * x / (2 * Math.PI);
+            }
+        };
+    }({});
+var mathpvector = function (require, constants, polargeometry) {
         'use strict';
+        var constants = constants;
+        var polarGeometry = polargeometry;
         function PVector(x, y, z) {
             this.x = x || 0;
             this.y = y || 0;
@@ -313,7 +326,11 @@ var mathpvector = function (require) {
             return this.normalize().mult(n);
         };
         PVector.prototype.heading = function () {
-            return Math.atan2(this.y, this.x);
+            if (constants.shiffmanMode === constants.RADIANS) {
+                return Math.atan2(this.y, this.x);
+            } else {
+                return polarGeometry.radiansToDegrees(Math.atan2(this.y, this.x));
+            }
         };
         PVector.prototype.rotate2D = function (a) {
             var newHeading = this.heading() + a;
@@ -379,7 +396,7 @@ var mathpvector = function (require) {
             return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
         };
         return PVector;
-    }({});
+    }({}, constants, polargeometry);
 var colorcreating_reading = function (require, core) {
         'use strict';
         var p5 = core;
@@ -2351,16 +2368,6 @@ var mathnoise = function (require, core) {
         };
         return p5;
     }({}, core);
-var polargeometry = function (require) {
-        return {
-            degreesToRadians: function (x) {
-                return 2 * Math.PI * x / 360;
-            },
-            radiansToDegrees: function (x) {
-                return 360 * x / (2 * Math.PI);
-            }
-        };
-    }({});
 var mathtrigonometry = function (require, core, polargeometry, constants) {
         'use strict';
         var p5 = core;
@@ -2424,6 +2431,7 @@ var mathtrigonometry = function (require, core, polargeometry, constants) {
         p5.prototype.angleMode = function (mode) {
             if (mode === constants.DEGREES || mode === constants.RADIANS) {
                 this.settings.angleMode = mode;
+                constants.shiffmanMode = mode;
             }
         };
         return p5;

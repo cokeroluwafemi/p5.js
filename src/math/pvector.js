@@ -2,6 +2,10 @@ define(function (require) {
 
   'use strict';
 
+  var constants = require('constants');
+  var polarGeometry = require('polargeometry');
+
+
   function PVector(x, y, z) {
     this.x = x || 0;
     this.y = y || 0;
@@ -221,7 +225,12 @@ define(function (require) {
    * @return {number} the angle of rotation
    */
   PVector.prototype.heading = function () {
-    return Math.atan2(this.y, this.x);
+    //console.log('SHIFFMANMODE: ' + constants.shiffmanMode + ' radians: ' + constants.RADIANS);
+    if (constants.shiffmanMode === constants.RADIANS) {
+      return Math.atan2(this.y, this.x);
+    } else {
+      return polarGeometry.radiansToDegrees(Math.atan2(this.y, this.x));
+    }
   };
 
   /**

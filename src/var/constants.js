@@ -4,6 +4,8 @@ define(function(require) {
 
   return {
 
+    shiffmanMode: 'radians',
+
     // ENVIRONMENT
     ARROW: 'default',
     CROSS: 'crosshair',

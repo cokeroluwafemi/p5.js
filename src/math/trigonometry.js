@@ -73,7 +73,7 @@ define(function (require) {
   p5.prototype.angleMode = function(mode) {
     if (mode === constants.DEGREES || mode === constants.RADIANS) {
       this.settings.angleMode = mode;
-
+      constants.shiffmanMode = mode;
     }
   };
 
