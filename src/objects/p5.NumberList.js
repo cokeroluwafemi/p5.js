@@ -70,13 +70,12 @@ define(function (require) {
 
 
   p5.NumberList.prototype.resize = function(length) {
-    if (length > this.data.length) {
-      var temp = data.slice(0, this.count);
-      data = temp;
-    } else if (length > this.count) {
-      Arrays.fill(data, count, length, 0);
+    if (length < this.data.length) {
+      this.data = this.data.slice(0, length);
+    } else {
+      this.data.fill(0, this.count, length-this.count);
     }
-    count = length;
+    this.count = length;
   }
 
 
@@ -86,8 +85,8 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Remove all entries from the list
    */
-  public void clear() {
-    count = 0;
+  p5.NumberList.clear = function() {
+    this.count = 0;
   }
 
 
@@ -97,10 +96,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Get an entry at a particular index
    */
-  public float get(int index) {
-    if (index >= count) {
-      throw new ArrayIndexOutOfBoundsException(index);
-    }
+  p5.NumberList.get = function(index) {
     return data[index];
   }
 
@@ -113,15 +109,14 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Set the entry at a particular index
    */
-  public void set(int index, float what) {
-    if (index >= count) {
-      data = PApplet.expand(data, index+1);
-      for (int i = count; i < index; i++) {
-        data[i] = 0;
+  p5.NumberList.set = function(index, what) {
+    if (index >= this.count) {
+      for (var i = count; i < index; i++) {
+        this.data[i] = 0;
       }
-      count = index+1;
+      this.count = index+1;
     }
-    data[index] = what;
+    this.data[index] = what;
   }
 
 
