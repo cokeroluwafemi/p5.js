@@ -211,8 +211,9 @@ define(function (require) {
       var context = this._isGlobal ? window : this;
       if (userPreload) {
         this._preloadMethods.forEach(function(f) {
-          context[f] = function(path) {
-            return context._preload(f, path);
+          context[f] = function() {
+            var argsArray = Array.prototype.slice.call(arguments);
+            return context._preload(f, argsArray);
           };
         });
         userPreload();
@@ -228,17 +229,19 @@ define(function (require) {
       }
     }.bind(this);
 
-    this._preload = function (func, path) {
+    this._preload = function (func, args) {
       var context = this._isGlobal ? window : this;
       context._setProperty('_preloadCount', context._preloadCount + 1);
-      return p5.prototype[func].call(context, path, function (resp) {
+      var preloadCallback = function (resp) {
         context._setProperty('_preloadCount', context._preloadCount - 1);
         if (context._preloadCount === 0) {
           context._setup();
           context._runFrames();
           context._draw();
         }
-      });
+      };
+      args.push(preloadCallback);
+      return p5.prototype[func].apply(context, args);
     }.bind(this);
 
     this._setup = function() {
@@ -271,6 +274,7 @@ define(function (require) {
       var now = new Date().getTime();
       this._frameRate = 1000.0/(now - this._lastFrameTime);
       this._lastFrameTime = now;
+      this._setProperty('frameCount', this.frameCount + 1);
       if (this._loop) {
         if (this._drawInterval) {
           clearInterval(this._drawInterval);
@@ -289,9 +293,6 @@ define(function (require) {
       if (this._updateInterval) {
         clearInterval(this._updateInterval);
       }
-      this._updateInterval = setInterval(function(){
-        this._setProperty('frameCount', this.frameCount + 1);
-      }.bind(this), 1000/this._targetFrameRate);
     }.bind(this);
 
     this._setProperty = function(prop, value) {

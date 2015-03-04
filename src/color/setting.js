@@ -57,7 +57,8 @@ define(function (require) {
     } else {
       var curFill = this.drawingContext.fillStyle;
       // create background rect
-      var newFill = p5.Color._getCanvasColor.apply(this, arguments);
+      var color = this.color.apply(this, arguments);
+      var newFill = color.toString();
       this.drawingContext.fillStyle = newFill;
       this.drawingContext.fillRect(0, 0, this.width, this.height);
       // reset fill
@@ -139,6 +140,7 @@ define(function (require) {
         maxArr[0] = arguments[1];
         maxArr[1] = arguments[1];
         maxArr[2] = arguments[1];
+        maxArr[3] = arguments[1];
       }
       else if (arguments.length > 2) {
         maxArr[0] = arguments[1];
@@ -184,7 +186,8 @@ define(function (require) {
   p5.prototype.fill = function() {
     this._setProperty('_doFill', true);
     var ctx = this.drawingContext;
-    ctx.fillStyle = p5.Color._getCanvasColor.apply(this, arguments);
+    var color = this.color.apply(this, arguments);
+    ctx.fillStyle = color.toString();
   };
 
   /**
@@ -254,7 +257,8 @@ define(function (require) {
   p5.prototype.stroke = function() {
     this._setProperty('_doStroke', true);
     var ctx = this.drawingContext;
-    ctx.strokeStyle = p5.Color._getCanvasColor.apply(this, arguments);
+    var color = this.color.apply(this, arguments);
+    ctx.strokeStyle = color.toString();
   };
 
 
