@@ -85,7 +85,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Remove all entries from the list
    */
-  p5.NumberList.clear = function() {
+  p5.NumberList.prototype.clear = function() {
     this.count = 0;
   };
 
@@ -96,7 +96,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Get an entry at a particular index
    */
-  p5.NumberList.get = function(index) {
+  p5.NumberList.prototype.get = function(index) {
     return this.data[index];
   };
 
@@ -109,7 +109,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Set the entry at a particular index
    */
-  p5.NumberList.set = function(index, what) {
+  p5.NumberList.prototype.set = function(index, what) {
     if (index >= this.count) {
       for (var i = this.count; i < index; i++) {
         this.data[i] = 0;
@@ -126,7 +126,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Remove an element from the specified index
    */
-  p5.NumberList.remove = function(index) {
+  p5.NumberList.prototype.remove = function(index) {
     if (index < 0 || index >= this.count) {
       throw index + ' is not a valid index for this NumberList';
     }
@@ -143,7 +143,7 @@ define(function (require) {
 
   // Remove the first instance of a particular value,
   // and return the index at which it was found.
-  p5.NumberList.removeValue = function(value) {
+  p5.NumberList.prototype.removeValue = function(value) {
     var index = this.index(value);
     if (index !== -1) {
       this.remove(index);
@@ -155,7 +155,7 @@ define(function (require) {
 
   // Remove all instances of a particular value,
   // and return the number of values found and removed
-  p5.NumberList.removeValues = function(value) {
+  p5.NumberList.prototype.removeValues = function(value) {
     var ii = 0;
     var i;
     if (isNaN(value)) {
@@ -178,7 +178,7 @@ define(function (require) {
 
 
   /** Replace the first instance of a particular value */
-  p5.NumberList.replaceValue = function(value, newValue) {
+  p5.NumberList.prototype.replaceValue = function(value, newValue) {
     if (isNaN(value)) {
       for (var i = 0; i < this.count; i++) {
         if (isNaN(this.data[i])) {
@@ -198,7 +198,7 @@ define(function (require) {
 
 
   /** Replace all instances of a particular value */
-  p5.NumberList.replaceValues = function(value, newValue) {
+  p5.NumberList.prototype.replaceValues = function(value, newValue) {
     var changed = false;
     var i;
     if (isNaN(value)) {
@@ -227,7 +227,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Add a new entry to the list
    */
-  p5.NumberList.append = function(value) {
+  p5.NumberList.prototype.append = function(value) {
     if (value instanceof Array) {
       for (var i = 0; i < value.length; i++) {
         this.append(value[i]);
@@ -242,7 +242,7 @@ define(function (require) {
   
 
   // Basically splice() but you can insert a full array or NumberList
-  p5.NumberList.insert = function(index, value) {
+  p5.NumberList.prototype.insert = function(index, value) {
     if (index < 0) {
       throw 'insert() index cannot be negative: it was ' + index;
     }
@@ -264,7 +264,7 @@ define(function (require) {
 
   /** Return the first index of a particular value. */
   // This should maybe be getIndex()
-  p5.NumberList.index = function(what) {
+  p5.NumberList.prototype.index = function(what) {
     for (var i = 0; i < this.count; i++) {
       if (this.data[i] === what) {
         return i;
@@ -278,7 +278,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Check if a number is a part of the list
    */
-  p5.NumberList.hasValue = function(value) {
+  p5.NumberList.prototype.hasValue = function(value) {
     var i;
     if (isNaN(value)) {
       for (i = 0; i < this.count; i++) {
@@ -297,7 +297,7 @@ define(function (require) {
   };
 
 
-  p5.NumberList.boundsProblem = function(index, method) {
+  p5.NumberList.prototype.boundsProblem = function(index, method) {
     var msg = 'The list size is ' + this.count + '.  You cannot ';
     msg +=  method + '() to element ' + index + '.';
     throw msg;
@@ -307,7 +307,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Add to a value
    */
-  p5.NumberList.add = function(index, amount) {
+  p5.NumberList.prototype.add = function(index, amount) {
     if (index < this.count) {
       this.data[index] += amount;
     } else {
@@ -320,7 +320,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Subtract from a value
    */
-  p5.NumberList.sub = function(index, amount) {
+  p5.NumberList.prototype.sub = function(index, amount) {
     if (index < this.count) {
       this.data[index] -= amount;
     } else {
@@ -333,7 +333,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Multiply a value
    */
-  p5.NumberList.mult = function(index, amount) {
+  p5.NumberList.prototype.mult = function(index, amount) {
     if (index < this.count) {
       this.data[index] *= amount;
     } else {
@@ -346,7 +346,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Divide a value
    */
-  p5.NumberList.div = function(index, amount) {
+  p5.NumberList.prototype.div = function(index, amount) {
     if (index < this.count) {
       this.data[index] /= amount;
     } else {
@@ -355,7 +355,7 @@ define(function (require) {
   };
 
 
-  p5.NumberList.checkMinMax = function(functionName) {
+  p5.NumberList.prototype.checkMinMax = function(functionName) {
     if (this.count === 0) {
       throw 'Cannot use ' + functionName + ' on an empty NumberList.';
     }
@@ -366,14 +366,14 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Return the smallest value
    */
-  p5.NumberList.min = function() {
+  p5.NumberList.prototype.min = function() {
     this.checkMinMax('min');
     var index = this.minIndex();
     return index === -1 ? NaN : this.data[index];
   };
 
 
-  p5.NumberList.minIndex = function() {
+  p5.NumberList.prototype.minIndex = function() {
     this.checkMinMax('minIndex');
     var m = NaN;
     var mi = -1;
@@ -402,14 +402,14 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Return the largest value
    */
-  p5.NumberList.max = function() {
+  p5.NumberList.prototype.max = function() {
     this.checkMinMax('max');
     var index = this.maxIndex();
     return index === -1 ? NaN : this.data[index];
   };
 
 
-  p5.NumberList.maxIndex = function() {
+  p5.NumberList.prototype.maxIndex = function() {
     this.checkMinMax('maxIndex');
     var m = NaN;
     var mi = -1;
@@ -434,7 +434,7 @@ define(function (require) {
   };
 
 
-  p5.NumberList.sum = function() {
+  p5.NumberList.prototype.sum = function() {
     var outgoing = 0;
     for (var i = 0; i < this.count; i++) {
       outgoing += this.data[i];
@@ -449,7 +449,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Sorts an array, lowest to highest
    */
-  p5.NumberList.sort = function() {
+  p5.NumberList.prototype.sort = function() {
     // This seems like a place to use native JS sort
     // So it's silly to have to deal with extra spots
     this.crop();
@@ -465,7 +465,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Reverse sort, orders values from highest to lowest
    */
-  p5.NumberList.sortReverse = function() {
+  p5.NumberList.prototype.sortReverse = function() {
     // This seems like a place to use native JS sort
     // So it's silly to have to deal with extra spots
     this.crop();
@@ -478,7 +478,7 @@ define(function (require) {
    * @webref floatlist:method
    * @brief Reverse the order of the list elements
    */
-  p5.NumberList.reverse = function() {
+  p5.NumberList.prototype.reverse = function() {
     var ii = this.count - 1;
     for (var i = 0; i < this.count/2; i++) {
       var t = this.data[i];
@@ -493,7 +493,7 @@ define(function (require) {
    * Randomize the list order using the random() function from the specified
    * sketch, allowing shuffle() to use its current randomSeed() setting.
    */
-  p5.NumberList.shuffle = function() {
+  p5.NumberList.prototype.shuffle = function() {
     var num = this.count;
     while (num > 1) {
       var value = 0;
@@ -510,7 +510,7 @@ define(function (require) {
   };
 
 
-  p5.NumberList.copy = function() {
+  p5.NumberList.prototype.copy = function() {
     var outgoing = new p5.NumberList(this.data);
     outgoing.count = this.count;
     return outgoing;
@@ -522,7 +522,7 @@ define(function (require) {
    * this is the fastest way to access a large list. Suitable for iterating
    * with a for() loop, but modifying the list will have terrible consequences.
    */
-  p5.NumberList.values = function() {
+  p5.NumberList.prototype.values = function() {
     this.crop();
     return this.data;
   };
@@ -564,7 +564,7 @@ define(function (require) {
    * not the same size, a new array will be allocated.
    * @param array
    */
-  p5.NumberList.array = function(array) {
+  p5.NumberList.prototype.array = function(array) {
     if (!array || array.length !== this.count) {
       array = new Array(this.count);
     }
@@ -582,7 +582,7 @@ define(function (require) {
    * to returns a new list (because IntList/Dict can't do percentages or
    * normalization in place on int values).
    */
-  p5.NumberList.getPercent = function(array) {
+  p5.NumberList.prototype.getPercent = function(array) {
   //public FloatList getPercent() {
     var sum = 0;
     var i;
@@ -599,14 +599,14 @@ define(function (require) {
 
 
 
-  p5.NumberList.getSubset = function(start, num) {
+  p5.NumberList.prototype.getSubset = function(start, num) {
     var end = (start + num) || this.count;
     var subset = this.data.slice(start, end);
     return new p5.NumberList(subset);
   };
 
 
-  p5.NumberList.join = function(separator) {
+  p5.NumberList.prototype.join = function(separator) {
     if (this.count === 0) {
       return '';
     }
@@ -619,14 +619,14 @@ define(function (require) {
   };
 
 
-  p5.NumberList.print = function() {
+  p5.NumberList.prototype.print = function() {
     for (var i = 0; i < this.size(); i++) {
       console.log('[' + i + '] ' +  this.data[i]);
     }
   };
 
 
-  p5.NumberList.toString = function() {
+  p5.NumberList.prototype.toString = function() {
     var sb = '';
     sb += 'NumberList size=' + this.size() + ' [ ';
     for (var i = 0; i < this.size(); i++) {
