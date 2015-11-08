@@ -2,6 +2,7 @@ var radio;
 
 function setup() {
   radio = createRadio();
+  radio.id('test');
   //radio = createSelect(); // for comparison
 
   // just mucking around
