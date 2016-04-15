@@ -172,6 +172,7 @@ p5.Vector.prototype.copy = function () {
  * acts directly on the vector. See the examples for more context.
  *
  * @method add
+ * Testing something
  * @chainable
  * @param  {Number|p5.Vector|Array} x   the x component of the vector to be
  *                                      added or a p5.Vector or an Array
